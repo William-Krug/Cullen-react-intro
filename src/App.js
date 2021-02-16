@@ -28,11 +28,6 @@ function App() {
   // Fancy useState syntax!
   // I'll explain this later
 
-  // Array destructuring
-  const returnValueOfUseState = useState(1);
-  const drinkCount = returnValueOfUseState[0];
-  const setDrinkCount = returnValueOfUseState[1];
-
   // useState is a hook (a fancy tool used inside of react components)
   // tracking the value of something across multiple calls of something
   //
@@ -40,13 +35,77 @@ function App() {
   // setDrinkCount let me change the value of my state
   const [drinkCount, setDrinkCount] = useState(1);
 
-  let name = 'William';
+  // same as:
+  // Array destructuring
+  // const returnValueOfUseState = useState(1);
+  // const drinkCount = returnValueOfUseState[0];
+  // const setDrinkCount = returnValueOfUseState[1];
+
+  // let name = 'William';
+  // useState is used to have variables that can change
+  // "name" is the value that we'll render
+  const [name, setName] = useState('William');
+
+  // "nameInput" will trackthat value in our <input /> field
+  const [nameInput, setNameInput] = useState('');
 
   let myH1 = <h1>Go home, {name}, you're drunk!!!!</h1>;
+
+  const soberUp = () => {
+    setDrinkCount(0);
+  };
+
+  const onSubmit = (event) => {
+    // Don't reload the page!
+    event.preventDefault();
+
+    console.log('onSubmit');
+
+    console.log('name:', name);
+    console.log('nameInput:', nameInput);
+
+    // Grab the value from the nameInput text field
+    // and update the `name` state
+    setName(nameInput);
+
+    // Clear name input
+    setNameInput('');
+  };
 
   // "HTML" is actually "JSX" === "Javascript eXtended"
   // as in App.jsx
   return (
+    <div>
+      <h1>Cullen Happy Hour!</h1>
+      <p>
+        {name} has had {drinkCount} drink
+      </p>
+
+      <button onClick={() => setDrinkCount(drinkCount + 1)}>Drink up</button>
+
+      {/* <button onClick={() => setDrinkCount(0)}>Sober up</button> */}
+      <button onClick={soberUp}>Sober up</button>
+
+      <form onSubmit={onSubmit}>
+        <input
+          value={nameInput}
+          placeholder="Enter your name please"
+          onChange={(event) => {
+            // event.preventDefault();
+            console.log('changing name', event.target.value);
+            // jQuery we would do
+            // $(this).val()
+            //
+            // In React:
+            // event.target.value
+            setNameInput(event.target.value);
+          }}
+        />
+
+        <input type="submit" />
+      </form>
+    </div>
+
     // <div className="App">
     //   {myH1}
     //   <header className="App-header">
@@ -68,17 +127,6 @@ function App() {
     //     </a>
     //   </header>
     // </div>
-
-    <div>
-      <h1>Cullen Happy Hour!</h1>
-      <p>
-        {name} has had {drinkCount} drink
-      </p>
-
-      <button onClick={() => setDrinkCount(drinkCount + 1)}>Drink up</button>
-
-      <button onClick={() => setDrinkCount(0)}>Sober up</button>
-    </div>
   );
 }
 
